@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home Page
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" type="text/css" href="{{ url_for('.static', filename='index.css') }}">
+{% endblock %}
+
+{% block nav %}
+{% if not current_user.is_authenticated %}
+<a class="nav-link active" href="/login" style="margin-right: 20px; font-size: 20px;">Login</a>
+<a class="nav-link active" href="/signup" style="margin-right: 20px; font-size: 20px;">Sign Up</a>
+{% else %}
+<a class="nav-link active" href="/profile" style="margin-right: 20px; font-size: 20px;">Profile</a>
+<a class="nav-link active" href="/logout" style="margin-right: 20px; font-size: 20px;">Log Out</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{{super()}}
+
+<body style="background-color: rgb(245, 244, 244); height: 100%;">
+    <h1>you can view your posts here</h1>
+    <div id="profile-nav">
+        <button class="button pro-active" style="margin-left: 2px;"><a href="/profile"
+                style="text-decoration: none; color: black;">View
+                Profile</a></button>
+        <button class="button"><a href="/profile/viewposts" style="text-decoration: none; color: black;">View
+                Posts</a></button>
+        <button class="button"><a href="/profile/edit" style="text-decoration: none; color: black;">Edit
+                Profile</a></button>
+
+    </div>
+</body>
+
+{% endblock %}
+
+
+
+{% block scripts %}
+{{super()}}
+{% endblock %}

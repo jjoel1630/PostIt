@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<style>
+    .button {
+        border: none;
+        outline: none;
+        padding: 10px 16px;
+        margin: 0px;
+        background-color: #f1f1f1;
+        width: 50%;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    /* Style the active class (and buttons on mouse-over) */
+    .pro-active {
+        background-color: #666;
+        color: white;
+    }
+
+    .button:hover {
+        background-color: rgb(158, 158, 158);
+    }
+
+    .profile-page {
+        margin-left: 25%;
+    }
+
+    h1.profile-name {
+        font-size: 40px;
+    }
+
+    h3.profile-name {
+        font-size: 30px;
+        margin-right: 100px;
+    }
+
+    .parent {
+        text-align: left;
+        margin-right: 200px;
+        line-height: 2;
+    }
+
+    hr {
+        border-top: 1px solid black;
+        margin-left: 150px;
+        margin-right: -50px;
+    }
+
+    .sub,
+    .ans {
+        display: inline;
+    }
+
+    .editProfile,
+    #logOut,
+    #editProfile,
+    #deleteAccount,
+    #createPost,
+    button.back {
+        height: 30px;
+        width: 100px;
+        margin-top: 15px;
+        border: 1px solid black;
+        border-radius: 4px;
+        background-color: white;
+        color: gray;
+        text-align: center;
+        font-size: 12px;
+    }
+
+    .editProfile:hover,
+    #logOut:hover,
+    #deleteAccount:hover,
+    #editProfile:hover,
+    #createPost:hover,
+    button.back:hover {
+        transform: scale(1.1);
+    }
+
+    #logOut {
+        border-color: rgb(255, 128, 128);
+        border-width: 2px;
+    }
+
+    #deleteAccount {
+        text-align: center;
+        border: none;
+        background-color: rgb(255, 96, 96);
+        color: white;
+    }
+
+    #profilePart {
+        display: flex;
+    }
+
+    #nameEtc {
+        height: 500px;
+    }
+
+    h4.sub {
+        font-size: 21px;
+        width: 55%;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    p.ans {
+        font-size: 18px;
+        width: 55%;
+        font-weight: 300;
+    }
+
+    .section {
+        margin-left: 40px;
+        margin-bottom: 7px;
+    }
+
+    .edit {
+        margin-left: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block nav %}
+{% if not current_user.is_authenticated %}
+<a class="nav-link active" href="/login" style="margin-right: 20px; font-size: 20px;">Login</a>
+<a class="nav-link active" href="/signup" style="margin-right: 20px; font-size: 20px;">Sign up</a>
+{% else %}
+<a class="nav-link active" href="/profile" style="margin-right: 20px; font-size: 20px;">Profile</a>
+<a class="nav-link active" href="/logout" style="margin-right: 20px; font-size: 20px;">Log Out</a>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{{super()}}
+
+<body>
+    <div id="profile-nav" style="padding: 0px; margin: 0px;">
+        <form action="/profile/yourposts">
+            <button class="button float-end">Your Posts</button>
+        </form>
+        <form action="/profile">
+            <button class="button pro-active">View Profile</button>
+        </form>
+        <!-- <button class="button" style="margin-right: 0px;"><a href="/profile/edit"
+                style="text-decoration: none; color: black;">Edit
+                Profile</a></button> -->
+    </div>
+
+    <!-- <p><b>Username:</b> {{current_user.username}}</p>
+    <p><b>Email:</b> {{current_user.email}}</p>
+    <p><b>Name:</b> {{current_user.name}}</p>
+    <p><b>Bio:</b> {{current_user.bio}}</p>
+    <p><b>Location:</b> {{current_user.location}}</p>
+    <p><b>Phone Number:</b> {{current_user.phone_number}}</p>
+    <br>
+    {% if not current_user.name or not current_user.bio or not current_user.name or not current_user.phone_number %}
+    <p>Some of your information isn't filled out. Try updating your profile <a href="/profile/edit">here!</a></p>
+    {% endif %}
+    <a href="/createpost">Create Post!</a>
+    <a href="/posts">View Posts!</a>
+    <a href="{{ url_for('logout') }}">Log Out</a> -->
+    <div class="profile-page">
+        <div class="parent">
+            <div>
+                <div id="profilePart">
+                    <div id="nameEtc">
+                        <br>
+                        <h1 class="profile-name">Username: </h1>
+                        <h3 class="profile-name"><i>@{{current_user.username}}</i></h3>
+                        <form action="/" style="display: inline;font-size:larger;">
+                            <button class="back" type="submit">
+                                &#8592 Home</button>
+                        </form>
+                        <form action="/createpost">
+                            <input id="createPost" type="submit" value="Create Post">
+                        </form>
+                        <form action="/profile/edit" method="POST">
+                            <input id="editProfile" type="submit" value="Edit Profile">
+                        </form>
+                        <form action="/logout">
+                            <input id="logOut" type="submit" value="Log Out">
+                        </form>
+                        <form action="/deleteAccount/{{current_user.id}}" method="POST">
+                            <button class="second btn btn-danger" id="deleteAccount" type="submit" name="button"
+                                value="Delete Account" style="height: auto; font-size: 11.2px;">Delete Account</button>
+                        </form>
+                    </div>
+                    <div id="about">
+                        <div>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <div class="section mt-3">
+                                <h4 class="sub purple bio" id="bio">Bio:</h4>
+                                <p class="ans">{{current_user.bio}}</p>
+                                <br>
+                            </div>
+                            <div class="section">
+                                <h4 class="sub green location">Name:</h4>
+                                <p class="ans"> {{current_user.name}}</p>
+                                <br>
+                            </div>
+                            <div class="section">
+                                <h4 class="sub green location">Location:</h4>
+                                <p class="ans"> {{current_user.location}}</p>
+                                <br>
+                            </div>
+                            <div class="section">
+                                <h4 class="sub blue phone">Phone Number:</h4>
+                                <p class="ans">{{current_user.phone_number}}</p>
+                                <br>
+                            </div>
+
+                            <div class="section">
+                                <h4 class="sub yellow email">Email:</h4>
+                                <p class="ans">{{current_user.email}}</p>
+                            </div>
+                            {% if not current_user.name or not current_user.bio or not current_user.name or not
+                            current_user.phone_number %}
+                            <p>Some of your information isn't filled out. Try updating your profile <a
+                                    href="/profile/edit">here!</a></p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+</body>
+
+{% block scripts %}
+{{super()}}
+<script src="/static/scripts/main.js"></script>
+{% endblock %}
+
+{% endblock %}

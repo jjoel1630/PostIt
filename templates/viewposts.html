@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}
+Your Posts
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<style>
+    .button {
+        border: none;
+        outline: none;
+        padding: 10px 16px;
+        background-color: #f1f1f1;
+        width: 50%;
+        cursor: pointer;
+        font-size: 18px;
+    }
+
+    /* Style the active class (and buttons on mouse-over) */
+    .pro-active {
+        background-color: #666;
+        color: white;
+    }
+
+    .button:hover {
+        background-color: rgb(158, 158, 158);
+    }
+</style>
+{% endblock %}
+
+
+{% block nav %}
+{% if not current_user.is_authenticated %}
+<a class="nav-link active" href="/login" style="margin-right: 20px; font-size: 20px;">Login</a>
+<a class="nav-link active" href="/signup" style="margin-right: 20px; font-size: 20px;">Sign Up</a>
+{% else %}
+<a class="nav-link active" href="/profile" style="margin-right: 20px; font-size: 20px;">Profile</a>
+<a class="nav-link active" href="/logout" style="margin-right: 20px; font-size: 20px;">Log Out</a>
+{% endif %}
+{% endblock %}
+
+
+{% block content %}
+{{super()}}
+
+<body>
+    <div id="profile-nav" style="padding: 0px; margin: 0px;">
+        <form action="/profile/yourposts">
+            <button class="button float-end pro-active">Your Posts</button>
+        </form>
+        <form action="/profile">
+            <button class="button">View Profile</button>
+        </form>
+        <!-- <button class="button" style="margin-right: 0px;"><a href="/profile/edit"
+                style="text-decoration: none; color: black;">Edit
+                Profile</a></button> -->
+    </div>
+    {% if len == 0 %}
+    <p style="font-size: 30px; " class="text-center pt-5">You haven't
+        posted anything. <a href="/createpost">Try creating a post here.</a></p>
+    {% endif %}
+    {% for post in posts %}
+    {% if post.user_id == current_user.id %}
+    <div class="shadow bg-white rounded-3 pt-4 ps-4 pb-4 pe-4 mt-4 mb-2 border border-secondary border-3"
+        style="width: 70%; margin: auto;">
+        <h1 class="text-center">{{post.Title}}</h1>
+        <p style="padding-bottom: 2px; padding-top: 2px; font-size: 25px;">
+            <b>Details: </b>{{post.Description}}
+        </p>
+        <h4>Located in {{post.Location}}</h4>
+        <h4>Created by {{post.Author}}</h4>
+        <form action="/deletepost/{{post.ID}}" method="POST" class="position-relative">
+            <button type="submit" class="btn btn-danger float-end position-absolute bottom-0 end-0">Delete Post</button>
+        </form>
+    </div>
+
+
+    {% endif %}
+    {% endfor %}
+    <br>
+</body>
+
+{% endblock %}
+
+{% block scripts %}
+{{super()}}
+<script src="/static/scripts/main.js"></script>
+{% endblock %}
