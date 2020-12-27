@@ -72,12 +72,12 @@ Your Posts
         <h4>Located in {{post.Location}}</h4>
         <h4>Created by {{post.Author}}</h4>
         <form action="/createcomment/{{post.ID}}">
-            <button class="btn btn-primary">View Post</button>
-            </ /form>
-            <form action="/deletepost/{{post.ID}}" method="POST" class="position-relative">
-                <button type="submit" class="btn btn-danger float-end position-absolute bottom-0 end-0">Delete
-                    Post</button>
-            </form>
+            <button class="btn btn-primary mt-2">View Post</button>
+        </form>
+        <form action="/deletepost/{{post.ID}}" method="POST" class="position-relative">
+            <button type="submit" class="btn btn-danger float-end position-absolute bottom-0 end-0">Delete
+                Post</button>
+        </form>
     </div>
 
 
