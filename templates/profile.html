@@ -227,11 +227,13 @@ Profile
                                 <h4 class="sub yellow email">Email:</h4>
                                 <p class="ans">{{current_user.email}}</p>
                             </div>
-                            {% if not current_user.name or not current_user.bio or not current_user.name or not
-                            current_user.phone_number %}
-                            <p>Some of your information isn't filled out. Try updating your profile <a
-                                    href="/profile/edit">here!</a></p>
-                            {% endif %}
+                            <div class="section">
+                                {% if not current_user.name or not current_user.bio or not current_user.name or not
+                                current_user.phone_number %}
+                                <p>Some of your information isn't filled out. Try updating your profile <a
+                                        href="/profile/edit">here!</a></p>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 </div>

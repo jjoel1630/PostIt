@@ -44,7 +44,7 @@ Create Post
         <p style="padding-bottom: 2px; padding-top: 2px; font-size: 25px;">{{comment.Text}}</p>
         <h6 class="">By <b>{{comment.Author}}</b></h6>
         {% if comment.user_id == current_user.id %}
-        <form action="" class="position-relative">
+        <form action="/deletecomment/{{comment.ID}}" class="position-relative">
             <button type="submit" class="btn btn-danger float-end position-absolute bottom-0 end-0">Delete
                 Comment</button>
         </form>

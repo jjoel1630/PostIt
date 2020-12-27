@@ -261,6 +261,7 @@ def createpost():
 @login_required
 def deletepost(postid):
     db.engine.execute(f"DELETE FROM post WHERE id={postid}")
+    db.engine.execute(f"DELETE FROM comment WHERE post_id={postid}")
     return redirect('/posts')
     # all the posts route
 
